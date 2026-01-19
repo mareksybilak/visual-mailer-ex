@@ -1,0 +1,28 @@
+# Dependencies
+/deps/
+/_build/
+
+# Generated files
+/doc/
+*.ez
+*.beam
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+/cover/
+
+# Dialyzer
+/priv/plts/
+
+# Environment
+.env
+.env.local
