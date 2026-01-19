@@ -207,9 +207,15 @@ defmodule VisualMailer.Validator do
 
   defp validate_enum(errors, map, key, valid_values, field_name) do
     case Map.get(map, key) do
-      nil -> errors
-      value when value in valid_values -> errors
-      value -> ["#{field_name} must be one of: #{Enum.join(valid_values, ", ")} (got: #{inspect(value)})" | errors]
+      nil ->
+        errors
+
+      value ->
+        if Enum.member?(valid_values, value) do
+          errors
+        else
+          ["#{field_name} must be one of: #{Enum.join(valid_values, ", ")} (got: #{inspect(value)})" | errors]
+        end
     end
   end
 

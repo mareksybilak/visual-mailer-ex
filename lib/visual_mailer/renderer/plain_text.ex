@@ -70,20 +70,20 @@ defmodule VisualMailer.Renderer.PlainText do
 
   defp convert_lists(html) do
     html
-    |> Regex.replace(~r/<ul[^>]*>/i, "\n")
-    |> Regex.replace(~r/<\/ul>/i, "\n")
-    |> Regex.replace(~r/<ol[^>]*>/i, "\n")
-    |> Regex.replace(~r/<\/ol>/i, "\n")
-    |> Regex.replace(~r/<li[^>]*>/i, "\n- ")
-    |> Regex.replace(~r/<\/li>/i, "")
+    |> then(&Regex.replace(~r/<ul[^>]*>/i, &1, "\n"))
+    |> then(&Regex.replace(~r/<\/ul>/i, &1, "\n"))
+    |> then(&Regex.replace(~r/<ol[^>]*>/i, &1, "\n"))
+    |> then(&Regex.replace(~r/<\/ol>/i, &1, "\n"))
+    |> then(&Regex.replace(~r/<li[^>]*>/i, &1, "\n- "))
+    |> then(&Regex.replace(~r/<\/li>/i, &1, ""))
   end
 
   defp convert_paragraphs(html) do
     html
-    |> Regex.replace(~r/<\/p>/i, "\n\n")
-    |> Regex.replace(~r/<\/div>/i, "\n")
-    |> Regex.replace(~r/<\/td>/i, "\t")
-    |> Regex.replace(~r/<\/tr>/i, "\n")
+    |> then(&Regex.replace(~r/<\/p>/i, &1, "\n\n"))
+    |> then(&Regex.replace(~r/<\/div>/i, &1, "\n"))
+    |> then(&Regex.replace(~r/<\/td>/i, &1, "\t"))
+    |> then(&Regex.replace(~r/<\/tr>/i, &1, "\n"))
   end
 
   defp convert_line_breaks(html) do
@@ -100,7 +100,8 @@ defmodule VisualMailer.Renderer.PlainText do
 
   defp decode_entities(text) do
     text
-    |> String.replace("&nbsp;", " ")
+    # Use actual non-breaking space character (U+00A0)
+    |> String.replace("&nbsp;", "\u00A0")
     |> String.replace("&amp;", "&")
     |> String.replace("&lt;", "<")
     |> String.replace("&gt;", ">")
